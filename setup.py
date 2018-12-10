@@ -65,7 +65,7 @@ setup(
 
     # Data files included in your packages. If using Python 2.6 or less, 
     # then these have to be included in MANIFEST.in as well.
-
+    include_package_data=True,
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
