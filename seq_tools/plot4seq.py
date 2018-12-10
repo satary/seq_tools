@@ -116,7 +116,7 @@ annotation_custom(seqimg2, xmin=%f,xmax=0,ymin=0.5, ymax=%f)
 """%(filename if filename[-3:]=='png' else (filename+'.png'),12./60.*lenseq2+3,12./60.*lenseq1+3))
 
 	a.close()
-	os.system('/usr/bin/env R --vanilla --slave < '+TEMP_DIR+'/mat4seq.r')
+	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'mat4seq.r'))
 
 def plot_manyprof4seq(filename='default',profiledf=[[]],seqmsa=[],features=[],axis='X',title='',offset=0.,yoffset=0.,funcgroups=None,seqontop=False,ruler=False,htune=1.0,ltune=1.0,wtune=1.0,oy=0.0,type='bar',bwidth=0.2,xbreaksby=2,base_size=24,psize=1.0,lsize=1.0,seqmargin=None,spacing=1,dropnan=False,vline=None,vlsize=0.0,xlab=None,scale_color=None,scale_x=None,scale_y=None,dpi=300):
 	"""
@@ -140,7 +140,7 @@ def plot_manyprof4seq(filename='default',profiledf=[[]],seqmsa=[],features=[],ax
 	if('expression' not in axis):
 		axis='"'+axis+'"'
 	#let's write an R-script
-	a=open(TEMP_DIR+'/prof4seq.r','w')
+	a=open(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r','w'))
 
 	a.write(r"""
 	library(ggplot2)
@@ -206,7 +206,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=%f,xmax=%f)"""%(base_size,'TRUE
 """%(filename if filename[-3:]=='png' else (filename+'.png'),4.0*htune,12./60.*ldf*wtune,dpi))
 
 	a.close()
-	os.system('/usr/bin/env R --vanilla --slave < '+TEMP_DIR+'/prof4seq.r')
+	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 
 
 
@@ -235,13 +235,13 @@ def plot_prof4seq(filename='default',profile=[],seqmsa=[],features=[],axis='X',t
 
 	a.write(r"""
 	library(ggplot2)
-library(fitdistrplus)
-library(gtools)
+#library(fitdistrplus)
+#library(gtools)
 library(png)
 library(grid)
-library(reshape2)
-library(gridExtra)
-library(plyr)""")
+#library(reshape2)
+#library(gridExtra)
+#library(plyr)""")
 
 	a.write("""
 	df<-read.csv("%s",skip=0,header=TRUE,check.name=FALSE)
@@ -278,7 +278,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=0.5,xmax=%f)"""%(fontsize,offse
 """%(filename if filename[-3:]=='png' else (filename+'.png'),4.0*htune,12./60.*len(profile)))
 
 	a.close()
-	os.system('/usr/bin/env R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
+	os.system('R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 
 
 def plot_2prof4seq(filename='default',profile=[],profile2=[],seqmsa=[],features=[],axis='X',axis2='X2',title='',offset=0.,funcgroups=None,ruler=False,htune=1.0,ltune=1.0):
@@ -295,7 +295,7 @@ def plot_2prof4seq(filename='default',profile=[],profile2=[],seqmsa=[],features=
 	shade_aln2png(seqmsa,filename=temppng,shading_modes=['charge_functional'], legend=False, features=features,title='',logo=False,hideseqs=False,splitN=20,setends=[],ruler=ruler,show_seq_names=False,show_seq_length=False,funcgroups=funcgroups)
 
 	#let's write an R-script
-	a=open(TEMP_DIR+'/prof4seq.r','w')
+	a=open(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'),'w')
 
 	a.write(r"""
 	library(ggplot2)
@@ -339,7 +339,7 @@ annotation_custom(seqimg, ymin=%f, ymax=0, xmin=0.5,xmax=%f)
 """%(filename if filename[-3:]=='png' else (filename+'.png'),4.0*htune,12./60.*len(profile)))
 
 	a.close()
-	os.system('/usr/bin/env R --vanilla --slave < '+TEMP_DIR+'/prof4seq.r')
+	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 
 
 

@@ -150,7 +150,7 @@ funcgroup example fg="\\funcgroup{xxx}{CT}{White}{Green}{upper}{up} \\funcgroup{
         else:
             features_dict[sr]=features_dict.get(sr,'')+"\\feature{%s}{%s}{%d..%d}{%s}{%s}"%(i.get('position','top'),sr,i['sel'][0]+1,i['sel'][1]+1,aliasf.get(i.get('style','loop'),i.get('style','loop')),i.get('text','').replace('_','-'))
             
-    a=open(TEMP_DIR+'/align.tex','w')
+    a=open(os.path.join(CONFIG.TEMP_DIR,'align.tex'),'w')
 
     a.write(r"""\documentclass[11pt,landscape]{article}
 %\documentclass{standalone}
@@ -204,7 +204,9 @@ funcgroup example fg="\\funcgroup{xxx}{CT}{White}{Green}{upper}{up} \\funcgroup{
     print('Launcning Latex:')
     print(command)
     os.system(command)
-    os.system('mv '+os.path.join(CONFIG.TEMP_DIR,'align.pdf')+' %s'%(filename if filename[-3:]=='pdf' else (filename+'.pdf')))
+    command='mv '+os.path.join(CONFIG.TEMP_DIR,'align.pdf')+' %s'%(filename if filename[-3:]=='pdf' else (filename+'.pdf'))
+    print(command)
+    os.system(command)
 
 
 
