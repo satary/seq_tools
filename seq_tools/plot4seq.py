@@ -31,11 +31,11 @@ import numpy as np
 import pandas as pd
 from StringIO import StringIO
 
-from hist_ss import get_hist_ss
-from hist_ss import get_hist_ss_in_aln, get_hist_ss_in_aln_for_shade
+#from hist_ss import get_hist_ss
+#from hist_ss import get_hist_ss_in_aln, get_hist_ss_in_aln_for_shade
 from Bio.Align.AlignInfo import SummaryInfo
-import L_aln_tools
-from L_shade_aln import shade_aln2png
+import aln_tools
+from shade_aln import shade_aln2png
 
 
 TEMP_DIR='/tmp'
