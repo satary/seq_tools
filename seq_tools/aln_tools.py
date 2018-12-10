@@ -64,7 +64,7 @@ MUSCLE_BIN=CONFIG.MUSCLE_BIN_PATH
 BLOSSUM_PATH=CONFIG.BLOSSUM_PATH
 
 PATH_TO_AL2CO=CONFIG.PATH_TO_AL2CO
-os.environ['PATH']='/Users/alexeyshaytan/soft/hmmer3.0/bin:/Users/alexeyshaytan/soft/al2co:/Users/alexeyshaytan/soft/x3dna-v2.1/bin:/Users/alexeyshaytan/soft/amber12/bin:/Users/alexeyshaytan/soft/sratoolkit/bin:/Users/alexeyshaytan/soft/bins/gromacs-4.6.3/bin:/opt/local/bin:/opt/local/sbin:/Users/alexeyshaytan/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/ncbi/blast/bin:/usr/texbin'+os.path.sep+os.environ['PATH']
+# os.environ['PATH']='/Users/alexeyshaytan/soft/hmmer3.0/bin:/Users/alexeyshaytan/soft/al2co:/Users/alexeyshaytan/soft/x3dna-v2.1/bin:/Users/alexeyshaytan/soft/amber12/bin:/Users/alexeyshaytan/soft/sratoolkit/bin:/Users/alexeyshaytan/soft/bins/gromacs-4.6.3/bin:/opt/local/bin:/opt/local/sbin:/Users/alexeyshaytan/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/ncbi/blast/bin:/usr/texbin'+os.path.sep+os.environ['PATH']
 
 
 def get_prot_seq_by_gis(gi_list):
