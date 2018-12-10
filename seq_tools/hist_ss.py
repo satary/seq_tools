@@ -78,21 +78,37 @@ def get_hist_ss(test_seq,type='Unknown',debug=0):
     n1=str(uuid.uuid4())
     n2=str(uuid.uuid4())
     
-    SeqIO.write([SeqRecord(test_seq,id='Query',name='Query')],n2+'.fasta','fasta')
+    faa_file=os.path.join(CONFIG.TEMP_DIR,n1+".faa")
+    fastan2_file=os.path.join(CONFIG.TEMP_DIR,n2+".fasta")
+    fastan1_file=os.path.join(CONFIG.TEMP_DIR,n1+".fasta")
+    db_file=os.path.join(CONFIG.TEMP_DIR,n1+".db")
+    xml_file=os.path.join(CONFIG.TEMP_DIR,n1+".xml")
+    txt_file=os.path.join(CONFIG.TEMP_DIR,n1+".txt")
+
+    phr_file=os.path.join(CONFIG.TEMP_DIR,n1+".db.phr")
+    pin_file=os.path.join(CONFIG.TEMP_DIR,n1+".db.pin")
+    psq_file=os.path.join(CONFIG.TEMP_DIR,n1+".db.psq")
+
+
+
+    SeqIO.write([SeqRecord(test_seq,id='Query',name='Query')],fastan2_file,'fasta')
+
+
 
 
     if(type=='Unknown'):
 
-            
-        SeqIO.write(my_records, n1+".faa", "fasta")
-        os.system('makeblastdb -dbtype prot -in %s.faa -out %s.db > /dev/null'%(n1,n1))
+
+
+        SeqIO.write(my_records, faa_file, "fasta")
+        os.system('makeblastdb -dbtype prot -in %s -out %s > /dev/null'%(faa_file,db_file))
 
 
 
-        blastp_cline = NcbiblastpCommandline(query=n2+".fasta", db=n1+".db", evalue=100,outfmt=5, out=n1+".xml")
+        blastp_cline = NcbiblastpCommandline(query=fastan2_file, db=db_file, evalue=100,outfmt=5, out=xml_file)
         stdout, stderr = blastp_cline()
 
-        blast_record = NCBIXML.read(open(n1+'.xml','r'))
+        blast_record = NCBIXML.read(open(xml_file,'r'))
 
         sname=list()
         evalue=list()
@@ -116,14 +132,14 @@ def get_hist_ss(test_seq,type='Unknown',debug=0):
     #We need to determine secondary strucutre according to template using the alignment
     # if(debug): print(hsp)
 
-    SeqIO.write([SeqRecord(templ[hist_identified],id=hist_identified,name=hist_identified)],n1+'.fasta','fasta')
+    SeqIO.write([SeqRecord(templ[hist_identified],id=hist_identified,name=hist_identified)],fastan1_file,'fasta')
 
 #Now we will redo it with Needlman Wunsh - the global alignment
-    needle_cline = NeedleCommandline(asequence=n1+".fasta", bsequence=n2+".fasta",gapopen=20, gapextend=1, outfile=n1+".txt")
+    needle_cline = NeedleCommandline(asequence=fastan1_file, bsequence=fastan2_file,gapopen=20, gapextend=1, outfile=txt_file)
     stdout, stderr = needle_cline()
 # print('Needle alignment')
 
-    align = AlignIO.read(n1+".txt", "emboss")
+    align = AlignIO.read(txt_file, "emboss")
     if(1): print(align)
     # print(hsp.gaps)
     #Blast checking
@@ -140,20 +156,17 @@ def get_hist_ss(test_seq,type='Unknown',debug=0):
     ss_test=dict()
     hist=templ[hist_identified]
 
-    corrsp_hist=range(len(hist))
+    corrsp_hist=list(range(len(hist)))
     k=0
     for a,i in zip(align[0],range(len(align[0]))):
-        print("dfdfdfd")
         if(a=='-'):
             k=k+1
         else:
-            print("dfdfdfd")
-            print(corrsp_hist)
             corrsp_hist[i-k]=i
     if(debug): print(corrsp_hist)
 
 
-    corrsp_test=range(len(test_seq))
+    corrsp_test=list(range(len(test_seq)))
     k=0
     for a,i in zip(align[1],range(len(align[1]))):
         if(a=='-'):
@@ -163,7 +176,7 @@ def get_hist_ss(test_seq,type='Unknown',debug=0):
     if(debug): print(corrsp_test)
 
 
-    for key,value in ss_templ[hist_identified].iteritems():
+    for key,value in ss_templ[hist_identified].items():
         if(debug): print('Checking %s'%key)
         start_in_aln=corrsp_hist[value[0]]
         if(debug): print('Start in aln %d'%start_in_aln)
@@ -199,9 +212,12 @@ def get_hist_ss(test_seq,type='Unknown',debug=0):
 
 
     if(type=='Unknown'):
-        os.system("rm %s.faa %s.db.phr %s.db.pin %s.db.psq %s.fasta %s.xml %s.txt %s.fasta"%(n1,n1,n1,n1,n2,n1,n1,n1))
+        #os.system("rm %s.faa %s.db.phr %s.db.pin %s.db.psq %s.fasta %s.xml %s.txt %s.fasta"%(n1,n1,n1,n1,n2,n1,n1,n1))
+        os.system("rm %s %s %s %s %s %s %s %s"%\
+            (faa_file,phr_file,pin_file,psq_file,fastan2_file,xml_file,txt_file,fastan1_file))
+
     else:
-        os.system("rm   %s.fasta  %s.txt %s.fasta"%(n2,n1,n1))
+        os.system("rm   %s  %s %s"%(fastan2_file,txt_file,fastan1_file))
         
 
 
@@ -269,7 +285,7 @@ def get_hist_ss_in_aln_for_shade(alignment,below=False,type='Unknown',debug=0):
     hv,ss=get_hist_ss_in_aln(alignment,type,debug)
     print("Type detected=",hv)
     features4shade=list()
-    for k,v in ss.iteritems():
+    for k,v in ss.items():
         if k[0:5]=='alpha':
             features4shade.append({'style':'helix','text':k,'position':'bbbottom' if below else 'tttop','sel':[v[0],v[1]]})
         if k[0:4]=='beta':

@@ -71,7 +71,7 @@ def seqfeat2shadefeat(msa,seqref=None,idseqref=True):
     return features
 
 def shade_aln2png(msa,filename='default',shading_modes=['similar'],features=[],title='',legend=True, logo=False,hideseqs=False,splitN=20,setends=[],ruler=False,show_seq_names=True,show_seq_length=True,funcgroups=None,rotate=False,threshold=[80,50],resperline=0,margins=None, density=150):
-    intf=TEMP_DIR+'/tempshade.pdf'
+    intf=os.path.join(CONFIG.TEMP_DIR,'tempshade.pdf')
     shade_aln2pdf(msa,intf,shading_modes,features,title,legend, logo,hideseqs,splitN,setends,ruler,show_seq_names,show_seq_length,funcgroups,threshold,resperline=resperline)
     #let's use imagemagic
     #margins - add on each side margins %
@@ -128,7 +128,7 @@ funcgroup example fg="\\funcgroup{xxx}{CT}{White}{Green}{upper}{up} \\funcgroup{
     ####iterate over blocks and create alignment fasta files
     for i in range(num):
         t_aln=msa[(i*splitN):((i+1)*splitN)]
-        AlignIO.write(t_aln,open(TEMP_DIR+'/alignment%d.fasta'%i,'w'), 'fasta')
+        AlignIO.write(t_aln,open(os.path.join(CONFIG.TEMP_DIR,'alignment%d.fasta'%i),'w'), 'fasta')
     if resperline==0:
         res_per_line=len(msa[0])
     else:
@@ -186,25 +186,25 @@ funcgroup example fg="\\funcgroup{xxx}{CT}{White}{Green}{upper}{up} \\funcgroup{
         for s,ns in zip(msa[(i*splitN):((i+1)*splitN)],range((i*splitN),((i+1)*splitN))):
             features_code+=features_dict.get(s.id,'')
             features_code+=features_dict.get(str(ns+1),'')
-        write_texshade(a,TEMP_DIR+'/alignment%d.fasta'%i , features_code, res_per_line,False,shading_modes,logo,hideseqs,setends,ruler,numbering_seq='consensus',hide_ns=False,show_seq_names=show_seq_names,show_seq_length=show_seq_length,hideseqs_by_name=hideseqs_by_name,funcgroups=funcgroups,threshold=threshold)
+        write_texshade(a,os.path.join(CONFIG.TEMP_DIR,'alignment%d.fasta'%i) , features_code, res_per_line,False,shading_modes,logo,hideseqs,setends,ruler,numbering_seq='consensus',hide_ns=False,show_seq_names=show_seq_names,show_seq_length=show_seq_length,hideseqs_by_name=hideseqs_by_name,funcgroups=funcgroups,threshold=threshold)
     
     i=num-1
     features_code=features_dict.get('consensus','')
     for s,ns in zip(msa[(i*splitN):((i+1)*splitN)],range((i*splitN),((i+1)*splitN))):
         features_code+=features_dict.get(s.id,'')
         features_code+=features_dict.get(str(ns+1),'')
-    write_texshade(a,TEMP_DIR+'/alignment%d.fasta'%(num-1) , features_code, res_per_line,legend,shading_modes,logo,hideseqs,setends,ruler,numbering_seq='consensus',hide_ns=False,show_seq_names=show_seq_names,show_seq_length=show_seq_length,hideseqs_by_name=hideseqs_by_name,funcgroups=funcgroups,threshold=threshold)
+    write_texshade(a,os.path.join(CONFIG.TEMP_DIR,'alignment%d.fasta'%(num-1)) , features_code, res_per_line,legend,shading_modes,logo,hideseqs,setends,ruler,numbering_seq='consensus',hide_ns=False,show_seq_names=show_seq_names,show_seq_length=show_seq_length,hideseqs_by_name=hideseqs_by_name,funcgroups=funcgroups,threshold=threshold)
 
     a.write(r"""
 \end{document} """)
     a.close()
 
-    command='/usr/bin/env pdflatex --file-line-error --synctex=1 -output-directory=%s --save-size=10000  %s/align.tex > /dev/null'%(TEMP_DIR,TEMP_DIR)
+    command='pdflatex --file-line-error --synctex=1 -output-directory=%s --save-size=10000  %s/align.tex > /dev/null'%(TEMP_DIR,TEMP_DIR)
 
     print('Launcning Latex:')
     print(command)
     os.system(command)
-    os.system('mv '+TEMP_DIR+'/align.pdf %s'%(filename if filename[-3:]=='pdf' else (filename+'.pdf')))
+    os.system('mv '+os.path.join(CONFIG.TEMP_DIR,'align.pdf')+' %s'%(filename if filename[-3:]=='pdf' else (filename+'.pdf')))
 
 
 

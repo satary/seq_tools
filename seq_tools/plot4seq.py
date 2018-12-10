@@ -38,7 +38,8 @@ from seq_tools import aln_tools
 from seq_tools.shade_aln import shade_aln2png
 
 
-TEMP_DIR='/tmp'
+from seq_tools import CONFIG
+
 
 def plot_mat4seq(filename='default',data=[],seq1=[],seq1lab='Chain 1',seq1offset=0,features1=[],seq2=[],seq2lab='Chain 2',seq2offset=0,features2=[],title=''):
 	"""
@@ -47,9 +48,9 @@ def plot_mat4seq(filename='default',data=[],seq1=[],seq1lab='Chain 1',seq1offset
 	Resids - 0 based numbering, or offset specified
 	you have to have zeros for non interacting residue(!)
 	"""
-	tempdf=TEMP_DIR+'/temp.csv'
-	temppng1=TEMP_DIR+'/tempprofseq1.png'
-	temppng2=TEMP_DIR+'/tempprofseq2.png'
+	tempdf=os.path.join(CONFIG.TEMP_DIR,'temp.csv')
+	temppng1=os.path.join(CONFIG.TEMP_DIR,'tempprofseq1.png')
+	temppng2=os.path.join(CONFIG.TEMP_DIR,'tempprofseq2.png')
 
 	lenseq1=len(seq1[0])
 	lenseq2=len(seq2[0])
@@ -62,7 +63,7 @@ def plot_mat4seq(filename='default',data=[],seq1=[],seq1lab='Chain 1',seq1offset
 
 
 	#let's write an R-script
-	a=open(TEMP_DIR+'/mat4seq.r','w')
+	a=open(os.path.join(CONFIG.TEMP_DIR,'mat4seq.r'),'w')
 
 	a.write(r"""
 	library(ggplot2)
@@ -218,8 +219,8 @@ def plot_prof4seq(filename='default',profile=[],seqmsa=[],features=[],axis='X',t
 	oy - y lower lim
 	type='bar' or 'point'
 	"""
-	tempdf=TEMP_DIR+'/temp.csv'
-	temppng=TEMP_DIR+'/tempprofseq.png'
+	tempdf=os.path.join(CONFIG.TEMP_DIR,'temp.csv')
+	temppng=os.path.join(CONFIG.TEMP_DIR,'tempprofseq.png')
 	# print profile
 	#convert profile to a dataframe
 	if(seqontop):
@@ -230,7 +231,7 @@ def plot_prof4seq(filename='default',profile=[],seqmsa=[],features=[],axis='X',t
 	shade_aln2png(seqmsa,filename=temppng,shading_modes=['charge_functional'], legend=False, features=features,title='',logo=False,hideseqs=False,splitN=20,setends=[],ruler=ruler,show_seq_names=False,show_seq_length=False,funcgroups=funcgroups)
 
 	#let's write an R-script
-	a=open(TEMP_DIR+'/prof4seq.r','w')
+	a=open(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'),'w')
 
 	a.write(r"""
 	library(ggplot2)
@@ -277,7 +278,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=0.5,xmax=%f)"""%(fontsize,offse
 """%(filename if filename[-3:]=='png' else (filename+'.png'),4.0*htune,12./60.*len(profile)))
 
 	a.close()
-	os.system('/usr/bin/env R --vanilla --slave < '+TEMP_DIR+'/prof4seq.r')
+	os.system('/usr/bin/env R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 
 
 def plot_2prof4seq(filename='default',profile=[],profile2=[],seqmsa=[],features=[],axis='X',axis2='X2',title='',offset=0.,funcgroups=None,ruler=False,htune=1.0,ltune=1.0):
