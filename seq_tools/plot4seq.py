@@ -117,6 +117,7 @@ annotation_custom(seqimg2, xmin=%f,xmax=0,ymin=0.5, ymax=%f)
 
 	a.close()
 	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'mat4seq.r'))
+	os.system('rm Rplots.pdf')
 
 def plot_manyprof4seq(filename='default',profiledf=[[]],seqmsa=[],features=[],axis='X',title='',offset=0.,yoffset=0.,funcgroups=None,seqontop=False,ruler=False,htune=1.0,ltune=1.0,wtune=1.0,oy=0.0,type='bar',bwidth=0.2,xbreaksby=2,base_size=24,psize=1.0,lsize=1.0,seqmargin=None,spacing=1,dropnan=False,vline=None,vlsize=0.0,xlab=None,scale_color=None,scale_x=None,scale_y=None,dpi=300):
 	"""
