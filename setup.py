@@ -55,7 +55,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-
+    packages=find_packages(exclude=['examples', 'docs', 'tests*']),
     # Run-time package dependencies. These will be installed by pip when your
     # project is installed.
     install_requires=[
