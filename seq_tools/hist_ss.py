@@ -95,7 +95,7 @@ def get_hist_ss(test_seq,type='Unknown',debug=0):
 
 
 
-    print(os.environ.get('PATH'))
+    # print(os.environ.get('PATH'))
     if(type=='Unknown'):
 
 

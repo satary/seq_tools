@@ -280,6 +280,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=0.5,xmax=%f)"""%(fontsize,offse
 
 	a.close()
 	os.system('R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
+	os.system('rm Rplots.pdf')
 
 
 def plot_2prof4seq(filename='default',profile=[],profile2=[],seqmsa=[],features=[],axis='X',axis2='X2',title='',offset=0.,funcgroups=None,ruler=False,htune=1.0,ltune=1.0):
