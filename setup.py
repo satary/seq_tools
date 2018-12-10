@@ -47,7 +47,7 @@ setup(
         'License :: Public Domain',
 
         # Python versions supported
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3',
     ],
 
     # What does your project relate to?
