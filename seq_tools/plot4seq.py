@@ -18,7 +18,7 @@ from Bio.PDB.Polypeptide import PPBuilder
 import csv
 import collections
 from Bio import Entrez
-import cPickle as pickle
+import  pickle
 from Bio import SeqIO
 
 from Bio.Align import MultipleSeqAlignment
@@ -29,13 +29,13 @@ import subprocess
 
 import numpy as np
 import pandas as pd
-from StringIO import StringIO
+from io import StringIO
 
 #from hist_ss import get_hist_ss
 #from hist_ss import get_hist_ss_in_aln, get_hist_ss_in_aln_for_shade
 from Bio.Align.AlignInfo import SummaryInfo
-import aln_tools
-from shade_aln import shade_aln2png
+from seq_tools import aln_tools
+from seq_tools.shade_aln import shade_aln2png
 
 
 TEMP_DIR='/tmp'

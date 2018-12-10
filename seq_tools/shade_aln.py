@@ -25,7 +25,7 @@ from Bio.PDB.Polypeptide import PPBuilder
 import csv
 import collections
 from Bio import Entrez
-import cPickle as pickle
+import pickle
 from Bio import SeqIO
 import math
 from Bio.Align import MultipleSeqAlignment
@@ -34,14 +34,14 @@ from Bio import AlignIO
 from Bio.Align.Applications import MuscleCommandline
 import subprocess
 
-from StringIO import StringIO
+from io import StringIO
 
-from hist_ss import get_hist_ss
-from hist_ss import get_hist_ss_in_aln, get_hist_ss_in_aln_for_shade
+from seq_tools.hist_ss import get_hist_ss
+from seq_tools.hist_ss import get_hist_ss_in_aln, get_hist_ss_in_aln_for_shade
 from Bio.Align.AlignInfo import SummaryInfo
-import L_aln_tools
+from seq_tools import aln_tools
 
-import CONFIG
+from seq_tools import CONFIG
 TEMP_DIR=CONFIG.TEMP_DIR
 
 def seqfeat2shadefeat(msa,seqref=None,idseqref=True):
@@ -122,8 +122,8 @@ funcgroup example fg="\\funcgroup{xxx}{CT}{White}{Green}{upper}{up} \\funcgroup{
     while ((a_len-(num-1)*splitN)<2):
         splitN=splitN+1
         num=int(a_len/splitN)+1
-    print "Chosen splitting parameters"    
-    print a_len, splitN
+    print("Chosen splitting parameters")
+    print(a_len, splitN)
 
     ####iterate over blocks and create alignment fasta files
     for i in range(num):
@@ -420,7 +420,7 @@ if __name__ == '__main__':
     msa=MultipleSeqAlignment([SeqRecord(xenopus_h2a_core,id='H2A',name='H2A')])
     features=get_hist_ss_in_aln_for_shade(msa,below=True)
     # features=[{'style':'fill:$\uparrow$','sel':[5,10],'text':'test'}]
-    print features
+    print(features)
     shade_aln2png(msa,filename='default',shading_modes=['charge_functional'], legend=False, features=features,title='',logo=False,hideseqs=False,splitN=20,setends=[],ruler=False,show_seq_names=False,show_seq_length=False)
     
 

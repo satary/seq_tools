@@ -30,7 +30,7 @@ from Bio.PDB.Polypeptide import PPBuilder
 import csv
 import collections
 from Bio import Entrez
-import cPickle as pickle
+import pickle
 from Bio import SeqIO
 from Bio.SeqUtils.CheckSum import seguid
 import numpy as np
@@ -43,20 +43,20 @@ import subprocess
 
 #from ete2 import NCBITaxa
 # import pylab
-from StringIO import StringIO
-import L_shade_hist_aln
+from io import StringIO
+#import L_shade_hist_aln
 from Bio.Align.AlignInfo import SummaryInfo
 from Bio.Emboss.Applications import NeedleCommandline
 #from pylab import *
 # sys.path.append('../sec_str')
 
-from hist_ss import get_hist_ss_in_aln
+from seq_tools.hist_ss import get_hist_ss_in_aln
  
 from Bio import pairwise2
 from Bio.SubsMat import MatrixInfo as matlist
 
 
-import CONFIG
+from seq_tools import CONFIG
 Entrez.email = CONFIG.EMAIL
 
 TEMP_DIR=CONFIG.TEMP_DIR
@@ -89,7 +89,7 @@ def get_prot_seq_by_gis(gi_list):
                 for r in SeqIO.parse(handle,'fasta'):
                     fasta_seq[r.id.split('|')[1]]=r.seq
             except Exception as e:
-                    print e
+                    print(e)
                     continue
             break
     print("Sequences downloaded:")
@@ -150,8 +150,8 @@ def get_prot_gbrec_by_gis(gi_list):
                     # fasta_seqrec[r.annotations['gi']]=r
                     fasta_seqrec[r.annotations['accessions'][0]]=r
             except Exception as e:
-                    print "Exception detected: %s"%e
-                    print r.annotations
+                    print("Exception detected: %s"%e)
+                    print(r.annotations)
                     continue
             break
     print("FASTA Records downloaded:")
@@ -186,7 +186,7 @@ def aln_undup(alignment):
     for record in alignment:
         checksum = seguid(record.seq)
         if checksum in checksums:
-            print "Ignoring %s" % record.id
+            print("Ignoring %s" % record.id)
             continue
         checksums.add(checksum)
         aln.append(record)
@@ -241,7 +241,7 @@ def cons_prof(alignment,f=2,c=2,m=0,norm='F'):
     p=re.compile("\d+\s+\S\s+\S+")
     cons_prof=[]
     for line in proc.stdout:
-        print line
+        print(line)
         if(p.match(line)):
             cons_prof.append(line.split()[2])
     return cons_prof    
@@ -333,8 +333,8 @@ def trim_aln_to_seq_length(alignment,sequence):
     # print seq
     begin=seq.index(str(sequence[0]))
     end=len(seq)-seq[::-1].index(str(sequence[-1]))
-    print begin
-    print end
+    print(begin)
+    print(end)
     return alignment[:,begin:end]
 
     
@@ -714,7 +714,7 @@ if __name__ == '__main__':
     msa=MultipleSeqAlignment([SeqRecord(xenopus_h2a_core,id='H2A',name='H2A'),SeqRecord(human_h2a_z_core,id='H2A.Z',name='H2A.Z'),SeqRecord(test_h2a_core,id='test',name='test')])
     # print trim_aln_gaps(msa,threshold=0.1)
     # print trim_aln_to_seq(msa,ts)
-    print cons_prof(msa)
+    print(cons_prof(msa))
 
     # get_pdf('H2A',MultipleSeqAlignment([SeqRecord(human_h2a_z_core,id='H2A',name='H2A'),SeqRecord(human_h2a_z_core,id='1H2A.Z',name='H2A.Z')]),'H2AvsH2A.Z',[0,5,1])
 
