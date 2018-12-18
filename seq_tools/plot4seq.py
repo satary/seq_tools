@@ -118,6 +118,10 @@ annotation_custom(seqimg2, xmin=%f,xmax=0,ymin=0.5, ymax=%f)
 	a.close()
 	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'mat4seq.r'))
 	os.system('rm Rplots.pdf')
+	os.remove(tempdf)
+	os.remove(temppng1)
+	os.remove(temppng2)
+
 
 def plot_manyprof4seq(filename='default',profiledf=[[]],seqmsa=[],features=[],axis='X',title='',offset=0.,yoffset=0.,funcgroups=None,seqontop=False,ruler=False,htune=1.0,ltune=1.0,wtune=1.0,oy=0.0,type='bar',bwidth=0.2,xbreaksby=2,base_size=24,psize=1.0,lsize=1.0,seqmargin=None,spacing=1,dropnan=False,vline=None,vlsize=0.0,xlab=None,scale_color=None,scale_x=None,scale_y=None,dpi=300):
 	"""
@@ -208,6 +212,8 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=%f,xmax=%f)"""%(base_size,'TRUE
 
 	a.close()
 	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
+	os.remove(tempdf)
+	os.remove(temppng)
 
 
 
@@ -281,6 +287,8 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=0.5,xmax=%f)"""%(fontsize,offse
 	a.close()
 	os.system('R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.system('rm Rplots.pdf')
+	os.remove(tempdf)
+	os.remove(temppng)
 
 
 def plot_2prof4seq(filename='default',profile=[],profile2=[],seqmsa=[],features=[],axis='X',axis2='X2',title='',offset=0.,funcgroups=None,ruler=False,htune=1.0,ltune=1.0):
@@ -288,8 +296,8 @@ def plot_2prof4seq(filename='default',profile=[],profile2=[],seqmsa=[],features=
 	thes same as plot_prof4seq but two profiles
 	profiles should be of the same length!
 	"""
-	tempdf=TEMP_DIR+'/temp.csv'
-	temppng=TEMP_DIR+'/tempprofseq.png'
+	tempdf=os.path.join(CONFIG.TEMP_DIR,'temp.csv')
+	temppng=os.path.join(CONFIG.TEMP_DIR,'tempprofseq.png')
 	# print profile
 	#convert profile to a dataframe
 	df=pd.DataFrame(np.array([profile,profile2,range(len(profile))]).T,columns=[axis,axis2,'Resid'])
@@ -342,6 +350,8 @@ annotation_custom(seqimg, ymin=%f, ymax=0, xmin=0.5,xmax=%f)
 
 	a.close()
 	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
+	os.remove(tempdf)
+	os.remove(temppng)
 
 
 
