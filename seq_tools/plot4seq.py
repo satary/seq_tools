@@ -212,6 +212,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=%f,xmax=%f)"""%(base_size,'TRUE
 
 	a.close()
 	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
+	os.remove(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.remove(tempdf)
 	os.remove(temppng)
 
@@ -287,6 +288,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=0.5,xmax=%f)"""%(fontsize,offse
 	a.close()
 	os.system('R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.system('rm Rplots.pdf')
+	os.remove(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.remove(tempdf)
 	os.remove(temppng)
 
@@ -350,6 +352,7 @@ annotation_custom(seqimg, ymin=%f, ymax=0, xmin=0.5,xmax=%f)
 
 	a.close()
 	os.system('R --vanilla --slave < '+os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
+	os.remove(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.remove(tempdf)
 	os.remove(temppng)
 
