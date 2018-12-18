@@ -88,6 +88,7 @@ def shade_aln2png(msa,filename='default',shading_modes=['similar'],features=[],t
         cmd='convert -density %d '%density+intf+' -trim -bordercolor White -border %.3f%%x0%% %s'%(m,filename if filename[-3:]=='png' else filename+'.png')
         print(cmd)
         os.system(cmd)
+    os.remove(intf)
 
 
 def shade_aln2pdf(msa,filename='default',shading_modes=['similar'],features=[],title='',legend=True, logo=False,hideseqs=False,splitN=20,setends=[],ruler=False,show_seq_names=True,show_seq_length=True,funcgroups=None,threshold=[80,50],resperline=0):
@@ -207,6 +208,9 @@ funcgroup example fg="\\funcgroup{xxx}{CT}{White}{Green}{upper}{up} \\funcgroup{
     command='mv '+os.path.join(CONFIG.TEMP_DIR,'align.pdf')+' %s'%(filename if filename[-3:]=='pdf' else (filename+'.pdf'))
     print(command)
     os.system(command)
+    for i in range(num):
+        os.remove(os.path.join(CONFIG.TEMP_DIR,'alignment%d.fasta'%i))
+    os.remove(os.path.join(CONFIG.TEMP_DIR,'align.tex'))
 
 
 
