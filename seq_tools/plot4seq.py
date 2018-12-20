@@ -288,6 +288,7 @@ annotation_custom(seqimg, ymin=%f, ymax=%f, xmin=0.5,xmax=%f)"""%(fontsize,offse
 	a.close()
 	os.system('R --vanilla --slave < %s'%os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.system('rm Rplots.pdf')
+	os.system('rm %s'%os.path.join(CONFIG.TEMP_DIR,'align.*'))
 	os.remove(os.path.join(CONFIG.TEMP_DIR,'prof4seq.r'))
 	os.remove(tempdf)
 	os.remove(temppng)
