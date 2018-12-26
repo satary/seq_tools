@@ -86,7 +86,7 @@ def plot_on_seq(data,seq,**kwargs):
     
     # Populating values if abscent
     if not 'resids' in kwargs:
-        resids=np.arange(data.size)
+        resids=np.arange(1,data.size+1)
     else:
         resids=kwargs['resids']
         
@@ -157,7 +157,7 @@ def heatplot_on_seq(data,seq,**kwargs):
     
     # Populating values if abscent
     if not 'resids' in kwargs:
-        resids=np.arange(data.size)
+        resids=np.arange(1,data.size+1)
     else:
         resids=kwargs['resids']
     if not 'y_axis_values' in kwargs:
