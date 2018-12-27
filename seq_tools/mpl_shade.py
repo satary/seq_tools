@@ -134,6 +134,7 @@ def heatplot_on_seq(data,seq,**kwargs):
     resids   - np array with residue numbers of same length as data and seq
     y_axis_label - string label of Y axis
     y_axis_values  - 1d numpy array with row names
+    colorbar_limits - tupple with limits for coloring
     colorbar_label - string label of colorbar axis
     cmap - matplotlib colormap
     figsize  - tupple with figure size in inches (width,heigth)
@@ -202,7 +203,11 @@ def heatplot_on_seq(data,seq,**kwargs):
     
     # 'Uninvasive' addition of the colorbar
     box = ax1.get_position()
-    cb1=plt.colorbar(im,ax=ax1,orientation="vertical")    
+    if 'colorbar_limits' in kwargs:
+        cb1=fig.colorbar(im,ax=ax1,boundaries=np.arange(*kwargs['colorbar_limits'],0.01))
+        cb1.set_clim(kwargs['colorbar_limits'])
+    else:
+        cb1=plt.colorbar(im,ax=ax1,orientation="vertical")
     ax1.set_position(box)    
     cb1.ax.set_position([box.x0*1.02 + box.width * 1.02, box.y0, 0.02, box.height])
     if 'colorbar_label' in kwargs:
