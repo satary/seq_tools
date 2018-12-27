@@ -62,6 +62,7 @@ def plot_on_seq(data,seq,**kwargs):
                seq_tools.hist_ss.get_hist_ss_in_aln_for_shade
     resids   - np array with residue numbers of same length as data and seq
     y_axis_label - string label of Y axis
+    y_axis_limits - tupple with (min, max) axis limits
         figsize  - tupple with figure size in inches (width,heigth)
     dpi      - int with DPI value
     '''
@@ -91,7 +92,10 @@ def plot_on_seq(data,seq,**kwargs):
         resids=kwargs['resids']
         
     # Plotting the data
-    ax1.bar(resids,data)    
+    ax1.bar(resids,data)  
+    if 'y_axis_limits' in kwargs:
+        ax1.set_ylim(kwargs['y_axis_limits'])    
+    
     ax1.xaxis.set_ticks(resids,minor=True)
     ax1.xaxis.set_ticklabels(seq,minor=True)
     if 'y_axis_label' in kwargs:
