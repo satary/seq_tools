@@ -175,7 +175,7 @@ def heatplot_on_seq(data,seq,**kwargs):
         cmap=kwargs['cmap']
     
     # Plotting ang adjusting the heatmap
-    im=ax1.imshow(data,extent=(resids[0]-0.5,resids[-1]+0.5,y_names[0],y_names[-1]),aspect = 'auto',cmap=cmap)
+    im=ax1.imshow(data,extent=(resids[0]-0.5,resids[-1]+0.5,y_names[0],y_names[-1]),origin = 'lower',aspect = 'auto',cmap=cmap)
     
     # Adding all ticks and their labels
     ax1.xaxis.set_ticks(resids,minor=True)
