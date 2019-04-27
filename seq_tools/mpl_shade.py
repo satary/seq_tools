@@ -133,14 +133,14 @@ def heatplot_on_seq(data,seq,**kwargs):
                seq_tools.hist_ss.get_hist_ss_in_aln_for_shade
     resids   - np array with residue numbers of same length as data and seq
     y_axis_label - string label of Y axis
-    y_axis_values  - 1d numpy array with row names
+    y_axis_values  - 1d numpy array with row values
+    y_axis_names   - 1d numpy array with row names
     colorbar_limits - tupple with limits for coloring
     colorbar_label - string label of colorbar axis
     cmap - matplotlib colormap
     figsize  - tupple with figure size in inches (width,heigth)
     dpi      - int with DPI value
     '''
-    
     # Try to predict 'optimal' width for the plot
     if not 'figsize' in kwargs:
         width=len(seq)/5
@@ -166,21 +166,29 @@ def heatplot_on_seq(data,seq,**kwargs):
     else:
         resids=kwargs['resids']
     if not 'y_axis_values' in kwargs:
-        y_names=np.arange(data.shape[0])
+        y_vals=np.arange(data.shape[0])
     else:
-        y_names=kwargs['y_axis_values']
+        y_vals=kwargs['y_axis_values']
+    if not 'y_axis_names' in kwargs:
+        y_names=None
+    else:
+        y_names=kwargs['y_axis_names']
     if not 'cmap' in kwargs:
         cmap='viridis'
     else:
         cmap=kwargs['cmap']
     
     # Plotting ang adjusting the heatmap
-    im=ax1.imshow(data,extent=(resids[0]-0.5,resids[-1]+0.5,y_names[0],y_names[-1]),origin = 'lower',aspect = 'auto',cmap=cmap)
+    if y_names is None:
+        im=ax1.imshow(data,extent=(resids[0]-0.5,resids[-1]+0.5,y_vals[0],y_vals[-1]),origin = 'lower',aspect = 'auto',cmap=cmap)
+    else:
+        im=ax1.imshow(data,extent=(resids[0]-0.5,resids[-1]+0.5,y_vals[0]-0.5,y_vals[-1]+0.5),origin = 'lower',aspect = 'auto',cmap=cmap)
     
     # Adding all ticks and their labels
     ax1.xaxis.set_ticks(resids,minor=True)
     ax1.xaxis.set_ticklabels(seq,minor=True)
-    
+    ax1.yaxis.set_ticks(y_vals,minor=True)
+   
     if 'y_axis_label' in kwargs:
         ax1.set_ylabel(kwargs['y_axis_label'])
     
@@ -189,6 +197,10 @@ def heatplot_on_seq(data,seq,**kwargs):
     ax1.tick_params(axis=u'both', which=u'major',length=0,labeltop=True)  
     ax1.tick_params(axis=u'both', which=u'major',length=0,labelbottom=False) 
     ax1.tick_params(axis=u'both', which=u'minor',length=0) 
+    if not(y_names is None):
+        ax1.yaxis.set_ticklabels(y_names,minor=True)
+        ax1.tick_params(axis=u'y', which=u'major',length=0,labelright=True) 
+        ax1.tick_params(axis=u'y', which=u'major',length=0,labelleft=False) 
     
     # Preparing 2nd axis for annotating
     ax2.set_aspect('equal')
@@ -209,7 +221,11 @@ def heatplot_on_seq(data,seq,**kwargs):
     else:
         cb1=plt.colorbar(im,ax=ax1,orientation="vertical")
     ax1.set_position(box)    
-    cb1.ax.set_position([box.x0*1.02 + box.width * 1.02, box.y0, 0.02, box.height])
+    
+    if y_names is None:
+        cb1.ax.set_position([box.x0*1.02 + box.width * 1.02, box.y0, 0.02, box.height])
+    else:
+        cb1.ax.set_position([box.x0*1.05 + box.width * 1.05, box.y0, 0.02, box.height])
     if 'colorbar_label' in kwargs:
         cb1.ax.set_ylabel(kwargs['colorbar_label'])    
     
